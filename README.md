@@ -1,5 +1,5 @@
 # restful-api-notes-service
-Python RESTful API service for working with notes (React, Flask, Connexion, SQLAlchemy, Marshmallow, Swagger, PostgreSQL). 
+Python RESTful API service for working with notes (React, Bootstrap, Flask, Connexion, SQLAlchemy, Marshmallow, Swagger, PostgreSQL). 
 
 ![](https://github.com/Peopl3s/restful-api-notes-service/blob/main/flask-backend/examples/swagger1.PNG)
 
