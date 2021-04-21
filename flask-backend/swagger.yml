@@ -1,0 +1,196 @@
+
+swagger: "2.0"
+info:
+  description: The swagger file with info about api
+  version: "1.0.0"
+  title: Swagger REST Note
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+paths:
+  /notes:
+    get:
+      operationId: "notes.read_all"
+      tags:
+        - "Notes"
+      summary: "The note data structure supported by the server application"
+      description: "Read the list of notes"
+      parameters:
+        - name: "query"
+          in: "query"
+          type: "string"
+          description: "Filtering query string"
+          required: False
+      responses:
+        200:
+          description: "Succesful read notes list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                note_id:
+                  type: "integer"
+                title:
+                  type: "string"
+                content:
+                  type: "string"
+                timestamp:
+                  type: "string"
+                remind:
+                  type: "boolean"
+      
+    post:
+      operationId: "notes.create"
+      tags:
+        - "Notes"
+      summary: "Create a note and add it to the notes list"
+      description: "Create a new note in the note list"
+      parameters:
+        - name: "note"
+          in: "body"
+          description: "Note to create"
+          required: True
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+                description: "Header of note to create"
+              content:
+                type: "string"
+                description: "Content of note to create"
+              remind:
+                type: boolean
+                description: "Check note need remind"
+            required:
+              - content
+              - remind
+      responses:
+        201:
+          description: "Successfully created note in list" 
+          schema:
+            properties:
+              note_id:
+                type: "string"
+                description: "Id of the note"
+              title:
+                type: "string"
+                description: "Title of the note"
+              content:
+                type: "string"
+                description: "Content of the note"
+              remind:
+                type: "boolean"
+                description: "Check of the note"
+              timestamp:
+                type: "string"
+                description: "Creation/Update timestamp of the person record"
+        406: 
+          description: "Note already exists"        
+      security:
+        - basic: []
+
+  /notes/{note_id}:
+    get:
+      operationId: "notes.read_one"
+      tags:
+        - "Notes"
+      summary: "Read one note from note list"
+      description: "Read one note from note list"
+      parameters:
+        - name: "note_id"
+          in: "path"
+          description: "Id of the note to get from the list"
+          type: "integer"
+          required: True
+      responses:
+        200:
+          description: "Successfully read note from list"
+          schema:
+            properties: 
+              note_id:
+                type: "integer"
+              title:
+                type: "string"
+              content:
+                type: "string"
+              timestamp:
+                type: "string"
+              remind:
+                type: "boolean"
+        404:
+          description: "The note with id not found"
+    
+    put:
+      operationId: "notes.update"
+      tags:
+        - "Notes"
+      summary: "Update a note from note list"
+      description: "Update a note from note list"
+      parameters:
+        - name: "note_id"
+          in: "path"
+          description: "Id of the note to get from the list"
+          type: "integer"
+          required: True
+        - name: "note"
+          in: "body"
+          schema:
+            type: "object"
+            properties: 
+              title:
+                type: "string"
+              content:
+                type: "string"
+              remind:
+                type: "boolean"
+            required:
+              - content
+              - remind
+      responses:
+        200:
+          description: "Successfully updated note from list"
+          schema:
+            properties: 
+              note_id:
+                type: "integer"
+              title:
+                type: "string"
+              content:
+                type: "string"
+              timestamp:
+                type: "string"
+              remind:
+                type: "boolean"
+        404:
+          description: "The note with id not found"
+      security:
+        - basic: []
+    
+    delete:
+      operationId: "notes.delete"
+      tags:
+        - "Notes"
+      summary: "Delete a note from note list"
+      description: "Delete a note from note list"
+      parameters:
+        - name: "note_id"
+          in: "path"
+          type: "integer"
+          required: True
+      responses:
+        200:
+          description: "Successfully deleted note from list"  
+        404:
+          description: "The note with id not found"  
+      security:
+        - basic: [] 
+
+securityDefinitions:
+  basic:
+    type: basic
+    x-basicInfoFunc: "auth.basic_auth"          
